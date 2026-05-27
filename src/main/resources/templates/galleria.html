@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+
+<html xmlns:th = "https://www.thymeleaf.org">
+	
+<head>
+	
+	<title>I nostri mici </title>
+		
+</head>
+
+<body>
+	
+	<h1>Gatti che cercano casa</h1>
+	
+	<div th:if = "${gattiDaMostrare.isEmpty()}">
+		
+		<p>Al momento non ci sono gatti nel rifugio :(</p>
+		<p> Torna a trovarci!!</p>
+		
+	</div>
+	
+	<ul th:unless = "${gattiDaMostrare.isEmpty()}">
+		
+		<li th:each = "Gatto: ${gattiDaMostrare}">
+			
+			Nome: <strong th:text = "${gatto.nome}">Buzzi</strong> <br>
+			Età: <span th:text = "${gatto.eta}">14</span>anni <br>
+			Colore: <span th:text = "${gatto.colore}">Bianco, con le macchiette nere</span>
+			
+			<hr> </li>
+	</ul>
+	
+	
+</body>
+
+</html>
