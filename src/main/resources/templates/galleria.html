@@ -21,10 +21,10 @@
 	
 	<ul th:unless = "${gattiDaMostrare.isEmpty()}">
 		
-		<li th:each = "Gatto: ${gattiDaMostrare}">
+		<li th:each = "gatto: ${gattiDaMostrare}">
 			
 			Nome: <strong th:text = "${gatto.nome}">Buzzi</strong> <br>
-			Età: <span th:text = "${gatto.eta}">14</span>anni <br>
+			Età: <span th:text = "${gatto.eta}">14</span>anni<br>
 			Colore: <span th:text = "${gatto.colore}">Bianco, con le macchiette nere</span>
 			
 			<hr> </li>

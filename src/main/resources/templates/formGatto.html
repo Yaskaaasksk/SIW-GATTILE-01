@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html xmlns:th = "http://www.thymeleaf.org">
+<head>
+	<title>Inserisci un nuovo Gatto</title>
+</head>
+
+<body>
+	
+	<h1>Aggiungi un ospite al gattile</h1>
+	
+	<form th:action="@{/admin/gatto}" th:object="${gatto}" method="POST">
+		
+		<div>
+			<label>Nome del gatto:</label>
+			<input type="text" th:field="*{nome}" required />
+		</div>
+		
+		<br>
+		
+		<div>
+			<label>Età (in anni):</label>
+			<input type="number" th:field="*{eta}" required />
+		</div>
+		
+		<br>
+		
+		<div>
+			<label>Colore del mantello:</label>
+			<input type="text" th:field="*{colore}" required />	
+		</div>
+		
+		<br>
+		
+		<button type="submit">Salva nel Database</button>
+	</form>
+	
+	<br>
+	<a href="/galleria">Torna alla galleria senza salvare</a>
+	
+</body>
+	
+</html>
