@@ -1,36 +1,44 @@
 <!DOCTYPE html>
-
-<html xmlns:th = "https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org">
 	
 <head>
-	
-	<title>I nostri mici </title>
-		
+	<title>I nostri mici</title>
 </head>
 
 <body>
 	
 	<h1>Gatti che cercano casa</h1>
 	
-	<div th:if = "${gattiDaMostrare.isEmpty()}">
-		
-		<p>Al momento non ci sono gatti nel rifugio :(</p>
-		<p> Torna a trovarci!!</p>
-		
+	<div th:if="${param.successo}" style="color: green; font-weight: bold;">
+    	Richiesta di adozione inviata con successo!
 	</div>
 	
-	<ul th:unless = "${gattiDaMostrare.isEmpty()}">
+	<div th:if="${gattiDaMostrare.isEmpty()}">
+		<p>Al momento non ci sono gatti nel rifugio :(</p>
+		<p>Torna a trovarci!!</p>
+	</div>
+	
+	<ul th:unless="${gattiDaMostrare.isEmpty()}">
 		
-		<li th:each = "gatto: ${gattiDaMostrare}">
+		<li th:each="gatto: ${gattiDaMostrare}">
 			
-			Nome: <strong th:text = "${gatto.nome}">Buzzi</strong> <br>
-			Età: <span th:text = "${gatto.eta}">14</span>anni<br>
-			Colore: <span th:text = "${gatto.colore}">Bianco, con le macchiette nere</span>
+			Nome: <strong th:text="${gatto.nome}">Buzzi</strong> <br>
+			Età: <span th:text="${gatto.eta}">14</span> anni <br>
+			Colore: <span th:text="${gatto.colore}">Bianco, con le macchiette nere</span>
 			
-			<hr> </li>
+			<br>
+			<a th:href="@{/adotta(gattoId=${gatto.id})}">Adotta questo gatto</a>
+			<a th:href="@{/admin/gestisciGatto(gattoId=${gatto.id})}" style="color: red;">Gestisci questo gatto</a>
+			
+			<hr> 
+		</li>
 	</ul>
 	
+	<hr>
+	<div style="margin-top: 20px; background-color: #f0f0f0; padding: 10px;">
+	    <strong>Area Volontari:</strong>
+	    <a href="/admin/elencoAdozioni">Visualizza tutte le richieste di adozione</a>
+	</div>
 	
 </body>
-
 </html>

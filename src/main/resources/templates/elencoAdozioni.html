@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Richieste Adozione</title>
+</head>
+<body>
+
+	<h1>Elenco Richieste di Adozione</h1>
+	
+	<table border="1">
+	
+		<thead>
+			<tr>
+				<th>ID Adozione</th>
+				<th>Nome Utente</th>
+				<th>Email</th>
+				<th>Gatto Richiesto (ID)</th>
+				<th>Gatto Richiesto (Nome))</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="adozione : ${tutteLeAdozioni}">
+				<td th:text="${adozione.id}">ID</td>
+				<td th:text="${adozione.nomeUtente}">Nome</td>
+				<td th:text="${adozione.email}">Email</td>
+				<td th:text="${adozione.gatto.id}">ID Gatto</td>
+				<td th:text="${adozione.gatto.nome}">Nome Gatto</td>
+		
+			</tr>
+		</tbody>
+	
+	</table>
+	
+	<br>
+	<a href="/galleria">Torna alla galleria</a>
+
+</body>
+
+</html>
