@@ -11,7 +11,7 @@
 	<body>
 	
 		<h1>Richiedi l'adozione</h1>
-		<form action="/richiestaAdozione" method="POST">
+		<form action="/richiestaAdozione" method="POST" th:object = "${gatto}">
 		
 			<input type="hidden" name="gattoId" th:value="${gatto.id}"/>
 			

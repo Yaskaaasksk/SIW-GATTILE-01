@@ -37,8 +37,8 @@ public class AdozioneController {
 
 	}
 	
-	@GetMapping("/adotta")
-    public String mostraFormAdozione(@RequestParam Long gattoId, Model model) {
+	@GetMapping("/adotta/{id}")
+    public String mostraFormAdozione(@RequestParam("gattoId") Long gattoId, Model model) {
         model.addAttribute("gatto", gattoRepository.findById(gattoId).get());
         return "richiestaAdozione";
     }

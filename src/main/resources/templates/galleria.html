@@ -24,7 +24,8 @@
 			
 			Nome: <strong th:text="${gatto.nome}">Buzzi</strong> <br>
 			Età: <span th:text="${gatto.eta}">14</span> anni <br>
-			Colore: <span th:text="${gatto.colore}">Bianco, con le macchiette nere</span>
+			Colore: <span th:text="${gatto.colore}">Bianco, con le macchiette nere</span><br>
+			Stato adozione: <span th:text = "${gatto.isAdottato()}"></span>
 			
 			<br>
 			<a th:href="@{/adotta(gattoId=${gatto.id})}">Adotta questo gatto</a>

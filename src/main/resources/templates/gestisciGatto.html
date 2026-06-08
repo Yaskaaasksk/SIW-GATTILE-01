@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+	
+	<head>
+	
+		<title>Gestisci Gatto</title>
+	
+	
+	</head>
+	<body>
+	
+		<h1>Gestione Gatto</h1>
+		
+		<form action = "/admin/aggiornaGatto" method = "POST" th:object = "${gatto}">
+			
+			<input type = "hidden" th:field = "*{id}"/>
+			
+			<p>Nome: <input type = "text" th:field = "*{nome}"/></p>
+			<p>Età: <input type = "number" th:field = "*{eta}"/></p>
+			<p>Colore: <input type = "text" th:field = "*{colore}"/></p>
+			
+			<p>
+				<input type = "checkbox" th:field = "*{adottato}"/>
+				<label>Segna come Adottato</label>
+			</p>
+			
+			<button type="submit">Salva Modifiche</button>
+			
+		</form>
+	
+		<hr>
+		
+		<div style = "margin-top: 30px; border: 1px solid red; padding: 10px;">
+			<h3>Zona pericolosa</h3>
+			<p>Se il gatto è stato trasferito, puoi rimuoverlo dal database.</p>
+			<a th:href = "@{/admin/eliminaGatto(gattoId=${gatto.id})}" style = "color: red; font-weight: bold;">ELIMINA QUESTO GATTO</a>
+		</div>
+		
+		<br>
+		<a href = "/galleria">Annulla e torna alla galleria</a>
+	</body>
+</html>
