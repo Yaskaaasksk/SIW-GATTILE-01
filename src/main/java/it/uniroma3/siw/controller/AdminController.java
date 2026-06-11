@@ -81,6 +81,7 @@ public class AdminController {
 	 * 
 	 * @return elencoAdozioni.html pagina che visualizza tutte le richieste di
 	 *         adozione
+	 * TODO
 	 */
 	@GetMapping("/elencoAdozioni")
 	public String elencaAdozioni(Model model) {
