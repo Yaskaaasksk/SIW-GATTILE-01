@@ -31,6 +31,75 @@ public class Gatto {
 	
 	@Column(name = "adottato")
 	private Boolean adottato;
+	
+	@Column(name = "fiv")
+	private Boolean fiv = false;
+	
+	@Column(name = "felv")
+	private Boolean felv = false;
+	
+	@Column(name = "vaccini")
+	private String vaccini;
+	
+	@Column(name = "problematiche")
+	private String problematiche;
+	 
+
+	/**
+	 * @return the fiv
+	 */
+	public Boolean getFiv() {
+		return fiv;
+	}
+
+	/**
+	 * @param fiv the fiv to set
+	 */
+	public void setFiv(Boolean fiv) {
+		this.fiv = fiv;
+	}
+
+	/**
+	 * @return the felv
+	 */
+	public Boolean getFelv() {
+		return felv;
+	}
+
+	/**
+	 * @param felv the felv to set
+	 */
+	public void setFelv(Boolean felv) {
+		this.felv = felv;
+	}
+
+	/**
+	 * @return the vaccini
+	 */
+	public String getVaccini() {
+		return vaccini;
+	}
+
+	/**
+	 * @param vaccini the vaccini to set
+	 */
+	public void setVaccini(String vaccini) {
+		this.vaccini = vaccini;
+	}
+
+	/**
+	 * @return the problematiche
+	 */
+	public String getProblematiche() {
+		return problematiche;
+	}
+
+	/**
+	 * @param problematiche the problematiche to set
+	 */
+	public void setProblematiche(String problematiche) {
+		this.problematiche = problematiche;
+	}
 
 	// Diciamo: l'adozione è gestita dalla variabile "gatto" dall'altra parte,
 	// ma se io (Gatto) vengo eliminato, distruggi in automatico anche l'adozione!
@@ -91,6 +160,10 @@ public class Gatto {
 	public Boolean getAdottato() {
 		return adottato;
 	}
+	
+	public void setAdottato(Boolean adottato) {
+		this.adottato = adottato;
+	}
 
 	/**
 	 * Metodo che verifica se il gatto è stato adottato o meno. 
@@ -104,9 +177,29 @@ public class Gatto {
 
 		return "Non è stato ancora adottato";
 	}
-
-	public void setAdottato(Boolean adottato) {
-		this.adottato = adottato;
+	
+	/**
+	 * Metodo che verifica se il gatto è positivo o negativo alla fiv
+	 * @return positivo se ha già avuto la fiv
+	 * */
+	
+	public String getFivTesto() {
+		if(this.fiv != null && this.fiv) {
+			return "Positivo";
+		}
+		return "Negativo";
 	}
 
+	/**
+	 * Metodo che verifica se il gatto è positivo o negativo alla felv
+	 * @return positivo se ha già avuto la felv
+	 * */
+	public String getFelvTesto() {
+		if(this.felv != null && this.felv) {
+			return "Positivo";
+		}
+		return "Negativo";
+	}
+	
+	
 }

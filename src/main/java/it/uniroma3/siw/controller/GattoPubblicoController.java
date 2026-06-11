@@ -2,7 +2,7 @@ package it.uniroma3.siw.controller;
 
 import it.uniroma3.siw.model.Gatto;
 import it.uniroma3.siw.model.GattoRepository;
-import it.uniroma3.siw.service.GattoServiceImpl;
+import it.uniroma3.siw.service.GattoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class GattoPubblicoController {
 	
 	@Autowired
-	private GattoServiceImpl gattoService;
+	private GattoService gattoService;
 	
 	@GetMapping("/galleria")
 	public String mostraGalleria(Model model) {

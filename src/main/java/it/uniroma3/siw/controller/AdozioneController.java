@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.uniroma3.siw.model.Adozione;
@@ -12,6 +13,7 @@ import it.uniroma3.siw.model.GattoRepository;
 import it.uniroma3.siw.repository.AdozioneRepository;
 
 @Controller
+@RequestMapping("/user")
 public class AdozioneController {
 
 	@Autowired
@@ -48,10 +50,6 @@ public class AdozioneController {
 	    return "successoAdozione"; 
 	}
 	
-	@GetMapping("/admin/elencoAdozioni")
-	public String elencaAdozioni(Model model) {
-		model.addAttribute("tutteLeAdozioni", adozioneRepository.findAll());
-		return "elencoAdozioni";
-	}
+	
 	
 }

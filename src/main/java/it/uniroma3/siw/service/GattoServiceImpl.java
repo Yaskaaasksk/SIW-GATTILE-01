@@ -10,44 +10,55 @@ import it.uniroma3.siw.model.Gatto;
 import it.uniroma3.siw.model.GattoRepository;
 
 @Service
-public class GattoServiceImpl {
-	
+public class GattoServiceImpl implements GattoService {
+
 	@Autowired
 	private GattoRepository gattoRepository;
-	
-	
+
 	/**
 	 * metodo che mi permette di salvare un gatto tramite la repository
+	 * 
 	 * @param oggetto gatto da salvare
-	 * */
+	 */
+	@Override
 	public void salvaGatto(Gatto gatto) {
 		gattoRepository.save(gatto);
 	}
-	
+
 	/**
 	 * metodo che mi permette di prendere l'oggetto gatto tramite l'id
+	 * 
 	 * @param id del gatto
 	 * @return oggetto gatto cercato
-	 * */
+	 */
+	@Override
 	public Gatto getGattoById(Long id) {
-		Optional<Gatto> gatto = gattoRepository.findById(id);//uso optional perchè fa il controllo in automatico se esiste l'oggetto o no
-		return gatto.get();	
+		Optional<Gatto> gatto = gattoRepository.findById(id);// uso optional perchè fa il controllo in automatico se
+																// esiste l'oggetto o no
+		return gatto.get();
 	}
-	
+
 	/**
 	 * metodo che mi permette di stampare la lista di tutti i gatti
-	 * @return lista gatti*/
-	public List<Gatto> tuttiIGatti(){
+	 * 
+	 * @return lista gatti
+	 */
+	@Override
+	public List<Gatto> tuttiIGatti() {
 		return gattoRepository.findAll();
 	}
-	
+
+	@Override
 	public void eliminaGatto(Gatto gatto) {
+
 		gattoRepository.delete(gatto);
 	}
-	
+
+	@Override
 	public void eliminaGatto(Long id) {
-		
-		
+		if (!gattoRepository.existsById(id)) {
+			throw new RuntimeException("impossibile eliminare gatto, impossibile");
+		}
 		gattoRepository.deleteById(id);
 	}
 }

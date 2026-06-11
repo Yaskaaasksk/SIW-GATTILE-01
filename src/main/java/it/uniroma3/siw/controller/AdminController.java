@@ -2,6 +2,8 @@ package it.uniroma3.siw.controller;
 
 import it.uniroma3.siw.model.Gatto;
 import it.uniroma3.siw.model.GattoRepository;
+import it.uniroma3.siw.service.GattoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,67 +16,75 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 @Controller
 @RequestMapping("/admin")
-public class GattoAdminController{
-	
-	
-	/*
-	 * TODO: DA CAMBIARE REPOSITORY in SERVICE
-	 * */
-	
-	
+public class AdminController {
+
 	@Autowired
-	private GattoRepository gattoRepository;
-	
+	private GattoService gattoService;
+
 	/*
-	 * gestisce richiesta GET: /admin/formGatto e restituisce la pagina di 
-	 * aggiunta del gatto.
-	 * */
+	 * gestisce richiesta GET: /admin/formGatto e restituisce la pagina di aggiunta
+	 * del gatto.
+	 */
 	@GetMapping("/formGatto")
 	public String mostraFormAggiungiGatto(Model model) {
 		model.addAttribute("gatto", new Gatto());
 		return "formGatto";
 	}
-	
+
 	/*
-	 * gestisce richiesta POST: /admin/gatto e salva il gatto nel database.
-	 * Una volta salvato rimando alla pagina galleria
-	 * */
+	 * gestisce richiesta POST: /admin/gatto e salva il gatto nel database. Una
+	 * volta salvato rimando alla pagina galleria
+	 */
 	@PostMapping("/gatto")
 	public String salvaGattoInDatabase(@ModelAttribute("gatto") Gatto gatto) {
-		gattoRepository.save(gatto);
+		gattoService.salvaGatto(gatto);
 		return "redirect:/galleria";
 	}
-	
+
 	/*
-	 * gestisce una richiesta GET: /admin/gestisciGatto e restituisce un form per modificare i dati del gatto.
-	 * Ricerca tramite id del gatto*/
+	 * gestisce una richiesta GET: /admin/gestisciGatto e restituisce un form per
+	 * modificare i dati del gatto. Ricerca tramite id del gatto
+	 */
 	@GetMapping("/gestisciGatto")
 	public String mostraFormGestione(@RequestParam Long gattoId, Model model) {
-		Gatto gattoDaModificare = gattoRepository.findById(gattoId).get();
+		Gatto gattoDaModificare = gattoService.getGattoById(gattoId);
 		model.addAttribute("gatto", gattoDaModificare);
 		return "gestisciGatto";
 	}
-	
+
 	/*
-	 * gestisce una richiesta POST: /admin/aggiornaGatto e salva l'eventuale modifica effettuata ai dati del gatto.
-	 * una volta salvato rimando alla pagina galleria*/
+	 * gestisce una richiesta POST: /admin/aggiornaGatto e salva l'eventuale
+	 * modifica effettuata ai dati del gatto. una volta salvato rimando alla pagina
+	 * galleria
+	 */
 	@PostMapping("/aggiornaGatto")
 	public String aggiornaGatto(@ModelAttribute Gatto gatto) {
-		gattoRepository.save(gatto);
+		gattoService.salvaGatto(gatto);
 		return "redirect:/galleria";
 	}
-	
+
 	/**
-	 * gestisce una richiesta GET: /admin/eliminaGatto ed elimina un gatto che viene ricercato tramite id
+	 * gestisce una richiesta GET: /admin/eliminaGatto ed elimina un gatto che viene
+	 * ricercato tramite id
 	 * 
 	 * @throw RuntimeException se il gatto da cancellare non esiste
-	 * */
+	 */
 	@GetMapping("/eliminaGatto")
 	public String eliminaGatto(@RequestParam("gattoId") Long gattoId) {
-		if(!gattoRepository.existsById(gattoId)) {
-			throw new RuntimeException("impossibile eliminare gatto, impossibile");
-		}
-		gattoRepository.deleteById(gattoId);
+		gattoService.eliminaGatto(gattoId);
 		return "redirect:/galleria";
+	}
+
+	/**
+	 * gestisce una richiesta GET: /admin/elencoAdozioni ed elenca tutte le
+	 * richieste di adozione che arrivano ai volontari
+	 * 
+	 * @return elencoAdozioni.html pagina che visualizza tutte le richieste di
+	 *         adozione
+	 */
+	@GetMapping("/elencoAdozioni")
+	public String elencaAdozioni(Model model) {
+		model.addAttribute("tutteLeAdozioni", gattoService.tuttiIGatti());
+		return "elencoAdozioni";
 	}
 }
