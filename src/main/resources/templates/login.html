@@ -1,30 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-
-	<title>Accesso Volontari</title>
-
+    <title>Accesso Area Riservata</title>
 </head>
-
 <body>
+    <h1>Accesso</h1>
 
-	<h1>Area Riservata Volontari</h1>
-	
-	<div th:if="${param.errore}" style= "color: red; font-weight: bold;">
-		
-		Username o password errati! Riprova.
-	
-	</div>
-	
-	<form action="/login" method="POST">
-		<p>Username: <input type="text" name="username" required/></p>
-		<p>Password: <input type="password" name="password" required/></p>
-		<button type="submit">Entra</button>	
-	</form>
-	
-	<br>
-	<a href="/galleria">Torna alla galleria pubblica</a>
-	
+    <div th:if="${param.errore}" style="color: red; font-weight: bold;">
+        Email o password errati! Riprova.
+    </div>
+
+    <div th:if="${param.logout}" style="color: green; font-weight: bold;">
+        Sei uscito correttamente dal sistema.
+    </div>
+
+    <form th:action="@{/login}" method="POST">
+        <p>Email: <input type="email" name="email" required /></p>
+        <p>Password: <input type="password" name="password" required /></p>
+        <button type="submit">Entra</button>
+    </form>
+
+    <br>
+    <a href="/registrazione">Non hai un account? Registrati qui</a><br><br>
+    <a href="/galleria">Torna alla galleria pubblica</a>
 </body>
-
 </html>

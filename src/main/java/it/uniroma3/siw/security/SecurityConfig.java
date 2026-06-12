@@ -4,10 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -18,36 +16,31 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                // 1. LE PAGINE PUBBLICHE (I tuoi lettori)
-            	.requestMatchers("/","/login", "/registrazione", "/richiestaAdozione","/admin/**", "/error", "/user/**").permitAll()                
-                // 2. LE PAGINE SEGRETE (La tua cucina privata)
-                .requestMatchers("").authenticated())
-            .formLogin(login -> login
-                // Usa il login base di Spring e poi ti manda alla pagina di gestione
-                .defaultSuccessUrl("/galleria", true) 
+                // Pagine che tutti possono vedere senza fare il login
+                .requestMatchers("/", "/galleria", "/registrazione", "/login").permitAll()
+                // Pagine riservate (tutto ciò che inizia per /admin/)
+                .requestMatchers("/admin/**").authenticated() 
+                .anyRequest().permitAll()
+            )
+            .formLogin(form -> form
+                .loginPage("/login")                 // La pagina che abbiamo creato
+                .usernameParameter("email")          // FONDAMENTALE! Diciamo a Spring di usare l'email
+                .defaultSuccessUrl("/galleria", true)// Dove andare se il login ha successo
+                .failureUrl("/login?errore=true")    // Dove andare se si sbaglia password
                 .permitAll()
             )
             .logout(logout -> logout
-                    // Comando super semplice che funziona grazie al CSRF disabilitato!
-                    .logoutUrl("/logout") 
-                    .logoutSuccessUrl("/") // Dopo l'uscita, torna alla Homepage pubblica
-                    .permitAll()
-                )
-            // Disabilitiamo temporaneamente una protezione per farti testare i form tranquillamente
-            .csrf(csrf -> csrf.disable()); 
-        
+                .logoutUrl("/logout")                // Il link per uscire
+                .logoutSuccessUrl("/galleria")       // Dove andare dopo essere usciti
+                .permitAll()
+            );
+
         return http.build();
     }
-
-    // IL TUO ACCOUNT SEGRETO
+    
+    // Il nostro criptatore per le password vere nel database
     @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails utenteAdmin = User.withDefaultPasswordEncoder()
-            .username("angi")         // Il tuo nome utente
-            .password("buzzi")     // La tua password (puoi cambiarla!)
-            .roles("ADMIN")
-            .build();
-
-        return new InMemoryUserDetailsManager(utenteAdmin);
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

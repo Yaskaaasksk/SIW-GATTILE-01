@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import it.uniroma3.siw.model.Adozione;
-import it.uniroma3.siw.model.GattoRepository;
 import it.uniroma3.siw.repository.AdozioneRepository;
+import it.uniroma3.siw.repository.GattoRepository;
 
 @Controller
 @RequestMapping("/user")

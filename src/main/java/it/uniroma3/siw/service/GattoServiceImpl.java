@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.uniroma3.siw.model.Gatto;
-import it.uniroma3.siw.model.GattoRepository;
+import it.uniroma3.siw.repository.GattoRepository;
 
 @Service
 public class GattoServiceImpl implements GattoService {

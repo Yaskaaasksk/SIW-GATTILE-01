@@ -9,13 +9,18 @@
 	
 	<h1>Gatti che cercano casa</h1>
 	
-	<div th:if="${session.ruolo == null}">
-		<a href="/login">Accesso Volontari</a>
+	<div th:if="${!isLoggato}">
+		<a href="/login">Accedi</a>
 	</div>
 	
-	<div th:if="${session.ruolo == 'VOLONTARIO'}" style="background-color: #d4edda; padding: 10px;">
-		Bentornato, volontario!
-		<a href="/logout" style="color: red; margin-left: 15px;">Esci (Logout)</a>
+	<div th:if="${isLoggato}" style="background-color: #d4edda; padding: 10px;">
+		Bentornato<span th:if="${isVolontario}">, volontario</span>!
+		
+		<form th:action="@{/logout}" method="POST" style="display: inline;">
+			<button type="submit" style="color: red; margin-left: 15px; background: none; border: none; cursor: pointer; font-size: 16px; text-decoration: underline; padding: 0;">
+				Esci (Logout)
+			</button>
+		</form>
 	</div>
 	
 	<div th:if="${param.successo}" style="color: green; font-weight: bold;">
@@ -35,18 +40,18 @@
 			Età: <span th:text="${gatto.eta}">14</span> anni <br>
 			Colore: <span th:text="${gatto.colore}">Bianco, con le macchiette nere</span><br>
 			Stato adozione: <span th:text="${gatto.isAdottato()}"></span>
-			
+			<br>
 			<strong>FIV:</strong> <span th:text="${gatto.getFivTesto()}"></span> |
 			<strong>FELV:</strong> <span th:text="${gatto.getFelvTesto()}"></span> <br>
 			<strong>Vaccini:</strong> <span th:text="${gatto.vaccini != null && !gatto.vaccini.isEmpty() ? gatto.vaccini : 'Nessun inserito'}"></span> <br>
 			<strong>Note Mediche:</strong> <span th:text="${gatto.problematiche != null && !gatto.problematiche.isEmpty() ? gatto.problematiche : 'Nessuna problematica segnalata'}"></span> <br>
 			<br>
 
-			<span th:if="${session.ruolo == null}">
+			<span th:if="${!isVolontario}">
 				<a th:href="@{/adotta(gattoId=${gatto.id})}">Adotta questo gatto</a>
 			</span>
 			
-			<span th:if="${session.ruolo == 'VOLONTARIO'}">
+			<span th:if="${isVolontario}">
 				<a th:href="@{/admin/gestisciGatto(gattoId=${gatto.id})}" style="color: red; margin-left: 10px;">Gestisci questo gatto</a>
 			</span>
 			
@@ -56,7 +61,7 @@
 	
 	<hr>
 
-	<div th:if="${session.ruolo == 'VOLONTARIO'}" style="margin-top: 20px; background-color: #f0f0f0; padding: 10px;">
+	<div th:if="${isVolontario}" style="margin-top: 20px; background-color: #f0f0f0; padding: 10px;">
 	    <strong>Area Volontari:</strong>
 	    <a href="/admin/elencoAdozioni">Visualizza tutte le richieste di adozione</a>
 	</div>

@@ -10,14 +10,22 @@
 
 <body>
 
-	<form th:action="@{/utente/adozione}" th:object="${utente}" method= "POST">
+	<h1>Registra un nuovo Utente</h1>
+	<form th:action="@{/registrazione}" th:object="${utente}" method= "POST">
 	
 		
-	
-	
-	
-	
-	</form>
+        
+        <p>Nome: <input type="text" th:field="*{nome}" required /></p>
+        <p>Cognome: <input type="text" th:field="*{cognome}" required /></p>
+        <p>Email: <input type="email" th:field="*{email}" required /></p>
+        <p>Numero di Telefono: <input type="text" th:field="*{numeroTelefono}" /></p>
+        <p>Password: <input type="password" th:field="*{password}" required /></p>
+        
+        <button type="submit">Registrati</button>
+    </form>
+    
+    <br>
+    <a href="/login">Hai già un account? Accedi qui</a>
 
 </body>
 	

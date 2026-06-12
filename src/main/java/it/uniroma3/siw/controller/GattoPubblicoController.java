@@ -1,7 +1,7 @@
 package it.uniroma3.siw.controller;
 
 import it.uniroma3.siw.model.Gatto;
-import it.uniroma3.siw.model.GattoRepository;
+import it.uniroma3.siw.repository.GattoRepository;
 import it.uniroma3.siw.service.GattoService;
 
 import org.springframework.beans.factory.annotation.Autowired;

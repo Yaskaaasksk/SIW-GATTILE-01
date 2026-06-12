@@ -24,11 +24,29 @@ public class Utente {
 	@Column(name = "cognome")
 	private String cognome;
 	
-	@Column(name = "numero di telefono")
+	@Column(name = "numero_di_telefono")
 	private String numeroTelefono;
 	
 	@Column(name = "password")
 	private String password;
+	
+	@Column(name = "ruolo")
+	private String ruolo;
+	
+
+	/**
+	 * @return the ruolo
+	 */
+	public String getRuolo() {
+		return ruolo;
+	}
+
+	/**
+	 * @param ruolo the ruolo to set
+	 */
+	public void setRuolo(String ruolo) {
+		this.ruolo = ruolo;
+	}
 
 	/**
 	 * @return the id
