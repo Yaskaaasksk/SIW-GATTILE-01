@@ -1,27 +1,24 @@
 <!DOCTYPE html>
-
 <html xmlns:th="http://www.thymeleaf.org">
 	
 	<head>
-	
 		<title>Gestisci Gatto</title>
-	
-	
 	</head>
+	
 	<body>
 	
 		<h1>Gestione Gatto</h1>
 		
-		<form action = "/admin/aggiornaGatto" method = "POST" th:object = "${gatto}">
+		<form th:action="@{/admin/aggiornaGatto}" method="POST" th:object="${gatto}">
 			
-			<input type = "hidden" th:field = "*{id}"/>
+			<input type="hidden" th:field="*{id}"/>
 			
-			<p>Nome: <input type = "text" th:field = "*{nome}"/></p>
-			<p>Età: <input type = "number" th:field = "*{eta}"/></p>
-			<p>Colore: <input type = "text" th:field = "*{colore}"/></p>
+			<p>Nome: <input type="text" th:field="*{nome}"/></p>
+			<p>Età: <input type="number" th:field="*{eta}"/></p>
+			<p>Colore: <input type="text" th:field="*{colore}"/></p>
 			
 			<p>
-				<input type = "checkbox" th:field = "*{adottato}"/>
+				<input type="checkbox" th:field="*{adottato}"/>
 				<label>Segna come Adottato</label>
 			</p>
 			
@@ -40,9 +37,8 @@
 				<input type="text" th:field="*{vaccini}" placeholder="Es: Trivalente, Rabbia..." style="width: 300px;"/>
 			</p>
 			<p>Problematiche o note mediche: <br>
-				<textarea th:field="*{problematiche}" placeholder="Inserisci eventuali terapie o allergie..." rows = "4" cols="40"></textarea>
+				<textarea th:field="*{problematiche}" placeholder="Inserisci eventuali terapie o allergie..." rows="4" cols="40"></textarea>
 			</p>
-			
 			
 			<button type="submit">Salva Modifiche</button>
 			
@@ -50,13 +46,14 @@
 	
 		<hr>
 		
-		<div style = "margin-top: 30px; border: 1px solid red; padding: 10px;">
+		<div style="margin-top: 30px; border: 1px solid red; padding: 10px;">
 			<h3>Zona pericolosa</h3>
 			<p>Se il gatto è stato trasferito, puoi rimuoverlo dal database.</p>
-			<a th:href = "@{/admin/eliminaGatto(gattoId=${gatto.id})}" style = "color: red; font-weight: bold;">ELIMINA QUESTO GATTO</a>
+			<a th:href="@{/admin/eliminaGatto(gattoId=${gatto.id})}" style="color: red; font-weight: bold;">ELIMINA QUESTO GATTO</a>
 		</div>
 		
 		<br>
-		<a href = "/galleria">Annulla e torna alla galleria</a>
+		<a href="/galleria">Annulla e torna alla galleria</a>
+		
 	</body>
 </html>

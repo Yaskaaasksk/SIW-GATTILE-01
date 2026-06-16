@@ -1,39 +1,82 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Richieste Adozione</title>
+<title>Richieste di Adozione</title>
 </head>
 <body>
 
-	<h1>Elenco Richieste di Adozione</h1>
-	
-	<table border="1">
-	
-		<thead>
-			<tr>
-				<th>ID Adozione</th>
-				<th>Nome Utente</th>
-				<th>Email</th>
-				<th>Gatto Richiesto (ID)</th>
-				<th>Gatto Richiesto (Nome))</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="adozione : ${tutteLeAdozioni}">
-				<td th:text="${adozione.id}">ID</td>
-				<td th:text="${adozione.nomeUtente}">Nome</td>
-				<td th:text="${adozione.email}">Email</td>
-				<td th:text="${adozione.gatto.id}">ID Gatto</td>
-				<td th:text="${adozione.gatto.nome}">Nome Gatto</td>
-		
-			</tr>
-		</tbody>
-	
-	</table>
-	
-	<br>
-	<a href="/galleria">Torna alla galleria</a>
+	<h1>Bacheca Volontari: Richieste di Adozione</h1>
+
+	<div style="margin-bottom: 20px;">
+		<a href="/galleria">Torna alla Galleria dei Gatti</a>
+	</div>
+
+	<div th:if="${tutteLeAdozioni.isEmpty()}">
+		<p>Al momento non ci sono richieste di adozione da gestire.</p>
+	</div>
+
+	<ul th:unless="${tutteLeAdozioni.isEmpty()}"
+		style="list-style-type: none; padding: 0;">
+
+		<li th:each="adozione : ${tutteLeAdozioni}"
+			style="margin-bottom: 20px; background-color: #f9f9f9; padding: 15px; border: 1px solid #ccc; border-radius: 5px;">
+
+			<h3 style="margin-top: 0;">
+				Richiesta per: <span th:text="${adozione.gatto.nome}"
+					style="color: orange;">Nome Gatto</span>
+			</h3>
+
+			<p>
+				<strong>Richiedente:</strong> <span
+					th:text="${adozione.nomeRichiedente} + ' ' + ${adozione.cognomeRichiedente}"></span><br>
+				<strong>Email:</strong> <a
+					th:href="'mailto:' + ${adozione.emailRichiedente}"
+					th:text="${adozione.emailRichiedente}"></a><br> <strong>Stato
+					pratica:</strong> <span th:if="${adozione.stato == 'IN ATTESA'}"
+					th:text="${adozione.stato}" style="color: blue; font-weight: bold;"></span>
+				<span th:if="${adozione.stato == 'ACCETTATA'}"
+					th:text="${adozione.stato}"
+					style="color: green; font-weight: bold;"></span> <span
+					th:if="${adozione.stato == 'RIFIUTATA'}"
+					th:text="${adozione.stato}" style="color: red; font-weight: bold;"></span>
+			</p>
+
+			<p>
+				<strong>Motivazione:</strong><br> <span
+					th:text="${adozione.motivazione}" style="font-style: italic;"></span>
+			</p>
+
+			<div th:if="${adozione.stato == 'IN ATTESA'}"
+				style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px;">
+
+				<form th:action="@{/admin/accettaAdozione}" method="POST"
+					style="display: inline;">
+					<input type="hidden" name="adozioneId" th:value="${adozione.id}" />
+					<button type="submit"
+						style="background-color: green; color: white; padding: 8px 12px; border: none; cursor: pointer; border-radius: 3px; font-weight: bold;">
+						✓ Accetta Adozione</button>
+				</form>
+
+				<form th:action="@{/admin/rifiutaAdozione}" method="POST"
+					style="display: inline; margin-left: 10px;">
+					<input type="hidden" name="adozioneId" th:value="${adozione.id}" />
+					<button type="submit"
+						style="background-color: darkred; color: white; padding: 8px 12px; border: none; cursor: pointer; border-radius: 3px; font-weight: bold;">
+						✕ Rifiuta</button>
+				</form>
+
+			</div>
+
+		</li>
+	</ul>
+	<div
+		style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #333;">
+		<form th:action="@{/logout}" method="POST" style="display: inline;">
+			<button type="submit"
+				style="color: white; background-color: red; padding: 10px 15px; border: none; cursor: pointer;">
+				Esci dal sistema (Logout)</button>
+		</form>
+	</div>
 
 </body>
-
 </html>

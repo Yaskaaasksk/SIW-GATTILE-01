@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Controlla lo stato dell'Adozione</title>
+</head>
+<body>
+
+    <h1>Le mie richieste di adozione</h1>
+    <a href="/galleria">Torna alla Galleria</a>
+    <hr>
+
+    <div style="background-color: #eef; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+        <h3>Inserisci la tua email per controllare a che punto è la tua pratica:</h3>
+        <form th:action="@{/cercaLeMieRichieste}" method="POST">
+            <input type="email" name="emailCercata" placeholder="La tua email..." required style="padding: 5px; width: 250px;" />
+            <button type="submit" style="padding: 5px 10px;">Cerca</button>
+        </form>
+    </div>
+
+    <div th:if="${richieste != null}">
+        
+        <h3 th:text="'Risultati per: ' + ${email}"></h3>
+        
+        <p th:if="${richieste.isEmpty()}" style="color: red;">
+            Non abbiamo trovato nessuna richiesta associata a questa email.
+        </p>
+
+        <ul th:unless="${richieste.isEmpty()}" style="list-style-type: none; padding: 0;">
+            <li th:each="richiesta : ${richieste}" style="margin-bottom: 15px; border: 1px solid #ccc; padding: 10px;">
+                
+                <strong>Gatto richiesto:</strong> <span th:text="${richiesta.gatto.nome}"></span><br>
+                
+                <strong>Stato della pratica:</strong> 
+                <span th:if="${richiesta.stato == 'IN ATTESA'}" th:text="${richiesta.stato}" style="color: blue; font-weight: bold;"></span>
+                <span th:if="${richiesta.stato == 'ACCETTATA'}" th:text="${richiesta.stato}" style="color: green; font-weight: bold;"></span>
+                <span th:if="${richiesta.stato == 'RIFIUTATA'}" th:text="${richiesta.stato}" style="color: red; font-weight: bold;"></span>
+                
+            </li>
+        </ul>
+
+    </div>
+
+</body>
+</html>

@@ -16,10 +16,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                // Pagine che tutti possono vedere senza fare il login
-                .requestMatchers("/", "/galleria", "/registrazione", "/login").permitAll()
-                // Pagine riservate (tutto ciò che inizia per /admin/)
+                // Pagine che tutti possono vedere senza fare il login (aggiunti i percorsi delle adozioni!)
+                .requestMatchers("/", "/galleria", "/registrazione", "/login", "/adotta", "/salvaAdozione", "/controllaStato", "/cercaLeMieRichieste").permitAll()
+                
+                // Pagine riservate ai volontari (tutto ciò che inizia per /admin/)
                 .requestMatchers("/admin/**").authenticated() 
+                
+                // Lasciamo aperto tutto il resto per comodità (come i file CSS o le immagini)
                 .anyRequest().permitAll()
             )
             .formLogin(form -> form
@@ -30,7 +33,7 @@ public class SecurityConfig {
                 .permitAll()
             )
             .logout(logout -> logout
-                .logoutUrl("/logout")                // Il link per uscire
+                .logoutUrl("/logout")                // Il modulo in POST per uscire
                 .logoutSuccessUrl("/galleria")       // Dove andare dopo essere usciti
                 .permitAll()
             );

@@ -1,70 +1,75 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org">
-	
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-	<title>I nostri mici</title>
+<title>I nostri mici</title>
 </head>
 
 <body>
-	
+
 	<h1>Gatti che cercano casa</h1>
-	
+
+	<div th:if="${mostraBottone}"
+		style="background-color: #f0f8ff; padding: 15px; border: 1px solid #cce0ff; border-radius: 5px; margin-bottom: 20px; display: inline-block;">
+		<strong>Hai già fatto una richiesta?</strong><br> <a
+			th:href="@{/controllaStato}"
+			style="color: #0056b3; font-weight: bold; text-decoration: none; font-size: 16px;">
+			🔍 Controlla lo stato della tua adozione </a>
+	</div>
 	<div th:if="${!isLoggato}">
 		<a href="/login">Accedi</a>
 	</div>
-	
-	<div th:if="${isLoggato}" style="background-color: #d4edda; padding: 10px;">
+
+	<div th:if="${isLoggato}"
+		style="background-color: #d4edda; padding: 10px;">
 		Bentornato<span th:if="${isVolontario}">, volontario</span>!
-		
+
 		<form th:action="@{/logout}" method="POST" style="display: inline;">
-			<button type="submit" style="color: red; margin-left: 15px; background: none; border: none; cursor: pointer; font-size: 16px; text-decoration: underline; padding: 0;">
-				Esci (Logout)
-			</button>
+			<button type="submit"
+				style="color: red; margin-left: 15px; background: none; border: none; cursor: pointer; font-size: 16px; text-decoration: underline; padding: 0;">
+				Esci (Logout)</button>
 		</form>
 	</div>
-	
+
 	<div th:if="${param.successo}" style="color: green; font-weight: bold;">
-    	Richiesta di adozione inviata con successo!
-	</div>
-	
+		Richiesta di adozione inviata con successo!</div>
+
 	<div th:if="${gattiDaMostrare.isEmpty()}">
 		<p>Al momento non ci sono gatti nel rifugio :(</p>
 		<p>Torna a trovarci!!</p>
 	</div>
-	
-	<ul th:unless="${gattiDaMostrare.isEmpty()}">
-		
-		<li th:each="gatto: ${gattiDaMostrare}">
-			
-			Nome: <strong th:text="${gatto.nome}">Buzzi</strong> <br>
-			Età: <span th:text="${gatto.eta}">14</span> anni <br>
-			Colore: <span th:text="${gatto.colore}">Bianco, con le macchiette nere</span><br>
-			Stato adozione: <span th:text="${gatto.isAdottato()}"></span>
-			<br>
-			<strong>FIV:</strong> <span th:text="${gatto.getFivTesto()}"></span> |
-			<strong>FELV:</strong> <span th:text="${gatto.getFelvTesto()}"></span> <br>
-			<strong>Vaccini:</strong> <span th:text="${gatto.vaccini != null && !gatto.vaccini.isEmpty() ? gatto.vaccini : 'Nessun inserito'}"></span> <br>
-			<strong>Note Mediche:</strong> <span th:text="${gatto.problematiche != null && !gatto.problematiche.isEmpty() ? gatto.problematiche : 'Nessuna problematica segnalata'}"></span> <br>
-			<br>
 
-			<span th:if="${!isVolontario}">
-				<a th:href="@{/adotta(gattoId=${gatto.id})}">Adotta questo gatto</a>
-			</span>
-			
-			<span th:if="${isVolontario}">
-				<a th:href="@{/admin/gestisciGatto(gattoId=${gatto.id})}" style="color: red; margin-left: 10px;">Gestisci questo gatto</a>
-			</span>
-			
-			<hr> 
+	<ul th:unless="${gattiDaMostrare.isEmpty()}">
+
+		<li th:each="gatto: ${gattiDaMostrare}">Nome: <strong
+			th:text="${gatto.nome}">Buzzi</strong> <br> Età: <span
+			th:text="${gatto.eta}">14</span> anni <br> Colore: <span
+			th:text="${gatto.colore}">Bianco, con le macchiette nere</span><br>
+			Stato adozione: <span th:text="${gatto.isAdottato()}"></span> <br>
+			<strong>FIV:</strong> <span th:text="${gatto.getFivTesto()}"></span>
+			| <strong>FELV:</strong> <span th:text="${gatto.getFelvTesto()}"></span>
+			<br> <strong>Vaccini:</strong> <span
+			th:text="${gatto.vaccini != null && !gatto.vaccini.isEmpty() ? gatto.vaccini : 'Nessun inserito'}"></span>
+			<br> <strong>Note Mediche:</strong> <span
+			th:text="${gatto.problematiche != null && !gatto.problematiche.isEmpty() ? gatto.problematiche : 'Nessuna problematica segnalata'}"></span>
+			<br> <br> <span th:if="${!isVolontario}"> <a
+				th:href="@{/adotta(gattoId=${gatto.id})}">Adotta questo gatto</a>
+		</span> <span th:if="${isVolontario}"> <a
+				th:href="@{/admin/gestisciGatto(gattoId=${gatto.id})}"
+				style="color: red; margin-left: 10px;">Gestisci questo gatto</a>
+		</span>
+
+			<hr>
 		</li>
 	</ul>
-	
+
 	<hr>
 
-	<div th:if="${isVolontario}" style="margin-top: 20px; background-color: #f0f0f0; padding: 10px;">
-	    <strong>Area Volontari:</strong>
-	    <a href="/admin/elencoAdozioni">Visualizza tutte le richieste di adozione</a>
+	<div th:if="${isVolontario}"
+		style="margin-top: 20px; background-color: #f0f0f0; padding: 10px;">
+		<strong>Area Volontari:</strong> <a href="/admin/elencoAdozioni">Visualizza
+			tutte le richieste di adozione</a>
 	</div>
-	
+
 </body>
 </html>

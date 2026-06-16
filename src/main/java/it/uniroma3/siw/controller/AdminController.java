@@ -1,7 +1,9 @@
 package it.uniroma3.siw.controller;
 
+import it.uniroma3.siw.model.Adozione;
 import it.uniroma3.siw.model.Gatto;
 import it.uniroma3.siw.repository.GattoRepository;
+import it.uniroma3.siw.service.AdozioneService;
 import it.uniroma3.siw.service.GattoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class AdminController {
 
 	@Autowired
 	private GattoService gattoService;
+	
+	@Autowired
+	private AdozioneService adozioneService;
 
 	/*
 	 * gestisce richiesta GET: /admin/formGatto e restituisce la pagina di aggiunta
@@ -58,7 +63,7 @@ public class AdminController {
 	 * galleria
 	 */
 	@PostMapping("/aggiornaGatto")
-	public String aggiornaGatto(@ModelAttribute Gatto gatto) {
+	public String aggiornaGatto(@ModelAttribute("gatto") Gatto gatto) {
 		gattoService.salvaGatto(gatto);
 		return "redirect:/galleria";
 	}
@@ -85,7 +90,43 @@ public class AdminController {
 	 */
 	@GetMapping("/elencoAdozioni")
 	public String elencaAdozioni(Model model) {
-		model.addAttribute("tutteLeAdozioni", gattoService.tuttiIGatti());
+		model.addAttribute("tutteLeAdozioni", adozioneService.tutteLeAdozioni());
 		return "elencoAdozioni";
 	}
+	
+	/*
+     * Area volontari: accetta una richiesta di adozione */
+    @PostMapping("/accettaAdozione")
+    public String accettaAdozione(@RequestParam("adozioneId") Long adozioneId) {
+    	Adozione adozione = adozioneService.getAdozioneById(adozioneId);
+    	
+    	//cambiamo lo stato della pratica
+    	if(adozione != null) {
+    		adozione.setStato("ACCETTATA");
+    		adozioneService.salvaAdozione(adozione);
+    		
+    		//segno il gatto come adottato in automatico
+    		Gatto gatto = adozione.getGatto();
+    		gatto.setAdottato(true);
+    		gattoService.salvaGatto(gatto);
+    	}
+    	return "redirect:/admin/elencoAdozioni";
+    }
+    
+    /*
+     * Area volontari: rifiuta adozione*/
+    @PostMapping("/rifiutaAdozione")
+    public String rifiutaAdozione(@RequestParam("adozioneId") Long adozioneId) {
+    	Adozione adozione = adozioneService.getAdozioneById(adozioneId);
+    	
+    	//cambiamo lo stato della pratica
+    	if(adozione != null) {
+    		adozione.setStato("RIFIUTATA");
+    		adozioneService.salvaAdozione(adozione);
+    		
+    	}
+    	return "redirect:/admin/elencoAdozioni";
+    
+    }
+    
 }

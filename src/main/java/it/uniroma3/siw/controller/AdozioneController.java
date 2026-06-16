@@ -1,55 +1,67 @@
 package it.uniroma3.siw.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import it.uniroma3.siw.model.Adozione;
-import it.uniroma3.siw.repository.AdozioneRepository;
-import it.uniroma3.siw.repository.GattoRepository;
+import it.uniroma3.siw.model.Gatto;
+import it.uniroma3.siw.service.AdozioneService;
+import it.uniroma3.siw.service.GattoService;
 
 @Controller
-@RequestMapping("/user")
 public class AdozioneController {
 
-	@Autowired
-	private AdozioneRepository adozioneRepository;
-	
-	@Autowired
-	private GattoRepository gattoRepository;
-	
-	@PostMapping("/richiestaAdozione")
-	public String creaRichiestaAdozione(@RequestParam long gattoId, @RequestParam String nomeUtente,
-										@RequestParam String email) {
-		
-		var gatto = gattoRepository.findById(gattoId).orElse(null);
-		
-		Adozione nuovaAdozione = new Adozione();
-		nuovaAdozione.setGatto(gatto);
-		nuovaAdozione.setNomeUtente(nomeUtente);
-		nuovaAdozione.setEmail(email);
-		
-		adozioneRepository.save(nuovaAdozione);
-		
-		return "redirect:/galleria";
+    @Autowired
+    private GattoService gattoService;
+    
+    // MODIFICA: Ora usiamo il Service invece del Repository
+    @Autowired
+    private AdozioneService adozioneService;
 
-	}
-	
-	@GetMapping("/adotta/{id}")
+    // Quando l'utente clicca "Adotta questo gatto"
+    @GetMapping("/adotta")
     public String mostraFormAdozione(@RequestParam("gattoId") Long gattoId, Model model) {
-        model.addAttribute("gatto", gattoRepository.findById(gattoId).get());
-        return "richiestaAdozione";
+        Gatto gatto = gattoService.getGattoById(gattoId);
+        model.addAttribute("gatto", gatto);
+        model.addAttribute("adozione", new Adozione());
+        return "formAdozione";
     }
-	
-	@GetMapping("/successoAdozione")
-	public String mostraPaginaSuccesso() {
-	    return "successoAdozione"; 
-	}
-	
-	
-	
+
+    // Quando l'utente clicca "Invia Richiesta" dal form
+    @PostMapping("/salvaAdozione")
+    public String salvaAdozione(@ModelAttribute("adozione") Adozione adozione, @RequestParam("gattoId") Long gattoId) {
+        Gatto gatto = gattoService.getGattoById(gattoId);
+        adozione.setGatto(gatto);
+        
+        // MODIFICA: Chiamiamo il metodo del Service per salvare nel database
+        adozioneService.salvaAdozione(adozione);
+        
+        // Rimandiamo alla galleria attivando il messaggio verde di successo!
+        return "redirect:/galleria?successo=true";
+    }
+    
+ // Mostra la pagina con la barra di ricerca
+    @GetMapping("/controllaStato")
+    public String mostraRicercaStato() {
+        return "controllaStato";
+    }
+    
+ // Riceve l'email inserita e cerca nel database
+    @PostMapping("/cercaLeMieRichieste")
+    public String cercaRichieste(@RequestParam("emailCercata") String email, Model model) {
+        List<Adozione> richiesteTrovate = adozioneService.trovaAdozioniPerEmail(email);
+        
+        model.addAttribute("richieste", richiesteTrovate);
+        model.addAttribute("email", email); // Ci ricordiamo l'email per mostrarla a schermo
+        
+        return "controllaStato";
+    }
+    
+    
+    
 }
+

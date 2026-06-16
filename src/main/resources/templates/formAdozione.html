@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Richiesta di Adozione</title>
+</head>
+<body>
+    
+    <h1>Richiesta di adozione per <span th:text="${gatto.nome}" style="color: orange;">Buzzi</span></h1>
+    <p>Compila questo modulo. I nostri volontari ti contatteranno il prima possibile!</p>
+
+    <form th:action="@{/salvaAdozione}" method="POST" th:object="${adozione}">
+        
+        <input type="hidden" name="gattoId" th:value="${gatto.id}" />
+
+        <p>Nome: <input type="text" th:field="*{nomeRichiedente}" required /></p>
+        <p>Cognome: <input type="text" th:field="*{cognomeRichiedente}" required /></p>
+        <p>Email: <input type="email" th:field="*{emailRichiedente}" required /></p>
+        
+        <p>Perché vorresti adottare questo gatto? Parlaci un po' di te:<br>
+            <textarea th:field="*{motivazione}" rows="5" cols="50" required></textarea>
+        </p>
+
+        <button type="submit">Invia Richiesta ai Volontari</button>
+    </form>
+    
+    <br>
+    <a href="/galleria">Annulla e torna alla galleria</a>
+
+</body>
+</html>

@@ -1,54 +1,48 @@
 package it.uniroma3.siw.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Adozione {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	private String nomeUtente;
-	private String email;
-	
-	@OneToOne
-	private Gatto gatto;
 
-	public Long getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    // Chi fa la richiesta
+    private String nomeRichiedente;
+    private String cognomeRichiedente;
+    private String emailRichiedente;
+    
+    @Column(length = 1000) // Spazio per un bel messaggio lungo
+    private String motivazione;
 
-	public String getNomeUtente() {
-		return nomeUtente;
-	}
+    // Per ricordarci a che punto è la pratica
+    private String stato = "IN ATTESA"; 
 
-	public void setNomeUtente(String nomeUtente) {
-		this.nomeUtente = nomeUtente;
-	}
+    // Il gatto che vogliono adottare!
+    @ManyToOne
+    private Gatto gatto;
 
-	public String getEmail() {
-		return email;
-	}
+    // --- GETTER E SETTER ---
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getNomeRichiedente() { return nomeRichiedente; }
+    public void setNomeRichiedente(String nomeRichiedente) { this.nomeRichiedente = nomeRichiedente; }
 
-	public Gatto getGatto() {
-		return gatto;
-	}
+    public String getCognomeRichiedente() { return cognomeRichiedente; }
+    public void setCognomeRichiedente(String cognomeRichiedente) { this.cognomeRichiedente = cognomeRichiedente; }
 
-	public void setGatto(Gatto gatto) {
-		this.gatto = gatto;
-	}
-	
+    public String getEmailRichiedente() { return emailRichiedente; }
+    public void setEmailRichiedente(String emailRichiedente) { this.emailRichiedente = emailRichiedente; }
 
+    public String getMotivazione() { return motivazione; }
+    public void setMotivazione(String motivazione) { this.motivazione = motivazione; }
+
+    public String getStato() { return stato; }
+    public void setStato(String stato) { this.stato = stato; }
+
+    public Gatto getGatto() { return gatto; }
+    public void setGatto(Gatto gatto) { this.gatto = gatto; }
 }
