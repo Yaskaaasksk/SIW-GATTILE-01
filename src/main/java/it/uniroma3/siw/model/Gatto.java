@@ -1,5 +1,7 @@
 package it.uniroma3.siw.model;
 
+import java.util.Base64;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,34 +18,33 @@ public class Gatto {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name = "nome")
 	private String nome;
-	
+
 	@Column(name = "eta")
 	private Integer eta;
-	
+
 	@Column(name = "colore")
 	private String colore;
-	
+
 	@Column(name = "razza")
 	private String razza;
-	
+
 	@Column(name = "adottato")
 	private Boolean adottato;
-	
+
 	@Column(name = "fiv")
 	private Boolean fiv = false;
-	
+
 	@Column(name = "felv")
 	private Boolean felv = false;
-	
+
 	@Column(name = "vaccini")
 	private String vaccini;
-	
+
 	@Column(name = "problematiche")
 	private String problematiche;
-	 
 
 	/**
 	 * @return the fiv
@@ -160,16 +161,17 @@ public class Gatto {
 	public Boolean getAdottato() {
 		return adottato;
 	}
-	
+
 	public void setAdottato(Boolean adottato) {
 		this.adottato = adottato;
 	}
 
 	/**
-	 * Metodo che verifica se il gatto è stato adottato o meno. 
+	 * Metodo che verifica se il gatto è stato adottato o meno.
 	 * Restituisce una stringa
+	 * 
 	 * @return gattino ha già trovato casa se è stato adottato
-	 * */
+	 */
 	public String isAdottato() {
 		if (getAdottato() != null && getAdottato()) {
 			return "Il gattino ha già trovato casa";
@@ -177,14 +179,15 @@ public class Gatto {
 
 		return "Non è stato ancora adottato";
 	}
-	
+
 	/**
 	 * Metodo che verifica se il gatto è positivo o negativo alla fiv
+	 * 
 	 * @return positivo se ha già avuto la fiv
-	 * */
-	
+	 */
+
 	public String getFivTesto() {
-		if(this.fiv != null && this.fiv) {
+		if (this.fiv != null && this.fiv) {
 			return "Positivo";
 		}
 		return "Negativo";
@@ -192,14 +195,34 @@ public class Gatto {
 
 	/**
 	 * Metodo che verifica se il gatto è positivo o negativo alla felv
+	 * 
 	 * @return positivo se ha già avuto la felv
-	 * */
+	 */
 	public String getFelvTesto() {
-		if(this.felv != null && this.felv) {
+		if (this.felv != null && this.felv) {
 			return "Positivo";
 		}
 		return "Negativo";
 	}
-	
-	
+
+	private byte[] foto;
+
+	// Getter e Setter per i byte
+	public byte[] getFoto() {
+		return foto;
+	}
+
+	public void setFoto(byte[] foto) {
+		this.foto = foto;
+	}
+
+	// TRADUTTORE MAGICO PER L'HTML:
+	// Converte i byte della foto in un testo leggibile dal browser
+	public String getFotoBase64() {
+		if (this.foto != null && this.foto.length > 0) {
+			return Base64.getEncoder().encodeToString(this.foto);
+		}
+		return null;
+	}
+
 }

@@ -9,7 +9,7 @@
 	
 		<h1>Gestione Gatto</h1>
 		
-		<form th:action="@{/admin/aggiornaGatto}" method="POST" th:object="${gatto}">
+		<form th:action="@{/admin/aggiornaGatto}" method="POST" th:object="${gatto}" enctype="multipart/form-data">
 			
 			<input type="hidden" th:field="*{id}"/>
 			
@@ -40,10 +40,16 @@
 				<textarea th:field="*{problematiche}" placeholder="Inserisci eventuali terapie o allergie..." rows="4" cols="40"></textarea>
 			</p>
 			
-			<button type="submit">Salva Modifiche</button>
+			<div style="margin-top: 20px; padding: 10px; background-color: #f9fbfa; border: 1px solid #b3d4e0; border-radius: 8px;">
+				<label><strong>Aggiorna la foto del gatto (lascia vuoto per mantenere quella attuale):</strong></label><br>
+				<input type="file" name="fileFoto" accept="image/png, image/jpeg" style="margin-top: 5px;" />
+			</div>
+			
+			<br>
+			<button type="submit" style="padding: 10px 20px; font-weight: bold;">Salva Modifiche</button>
 			
 		</form>
-	
+		
 		<hr>
 		
 		<div style="margin-top: 30px; border: 1px solid red; padding: 10px;">

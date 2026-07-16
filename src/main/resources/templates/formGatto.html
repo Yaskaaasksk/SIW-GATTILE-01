@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html xmlns:th = "http://www.thymeleaf.org">
 <head>
 	<title>Inserisci un nuovo Gatto</title>
@@ -9,7 +8,7 @@
 	
 	<h1>Aggiungi un ospite al gattile</h1>
 	
-	<form th:action="@{/admin/gatto}" th:object="${gatto}" method="POST">
+	<form th:action="@{/admin/gatto}" th:object="${gatto}" method="POST" enctype="multipart/form-data">
 		
 		<div>
 			<label>Nome del gatto:</label>
@@ -31,6 +30,13 @@
 		</div>
 		
 		<br>
+		
+		<div style="margin-top: 15px;">
+			<label><strong>Carica una foto del gatto:</strong></label><br>
+			<input type="file" name="fileFoto" accept="image/png, image/jpeg" style="margin-top: 5px;" />
+		</div>
+		
+		<br><br>
 		
 		<button type="submit">Salva nel Database</button>
 	</form>
