@@ -12,38 +12,42 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth
-                        // Pagine che tutti possono vedere senza fare il login (aggiunti i percorsi
-                        // delle adozioni!)
-                        .requestMatchers("/", "/galleria", "/registrazione", "/login", "/adotta", "/salvaAdozione",
-                                "/controllaStato", "/cercaLeMieRichieste")
-                        .permitAll()
+        @Bean
+        public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+                http
+                                .authorizeHttpRequests(auth -> auth
+                                                // Pagine che tutti possono vedere senza fare il login (aggiunti i
+                                                // percorsi
+                                                // delle adozioni!)
+                                                .requestMatchers("/", "/galleria", "/registrazione", "/login",
+                                                                "/adotta", "/salvaAdozione",
+                                                                "/controllaStato", "/cercaLeMieRichieste")
+                                                .permitAll()
 
-                        // Pagine riservate ai volontari (tutto ciò che inizia per /admin/)
-                        .requestMatchers("/admin/**").hasAnyRole("ADMIN", "VOLONTARIO")
+                                                .requestMatchers("/preferiti/**").authenticated()
 
-                        // Lasciamo aperto tutto il resto per comodità (come i file CSS o le immagini)
-                        .anyRequest().permitAll())
-                .formLogin(form -> form
-                        .loginPage("/login") // La pagina che abbiamo creato
-                        .usernameParameter("email") // FONDAMENTALE! Diciamo a Spring di usare l'email
-                        .defaultSuccessUrl("/galleria", true)// Dove andare se il login ha successo
-                        .failureUrl("/login?errore=true") // Dove andare se si sbaglia password
-                        .permitAll())
-                .logout(logout -> logout
-                        .logoutUrl("/logout") // Il modulo in POST per uscire
-                        .logoutSuccessUrl("/galleria") // Dove andare dopo essere usciti
-                        .permitAll());
+                                                .requestMatchers("/admin/**").hasAnyRole("ADMIN", "VOLONTARIO")
 
-        return http.build();
-    }
+                                                .anyRequest().permitAll())
+                                .formLogin(form -> form
+                                                .loginPage("/login") // La pagina che abbiamo creato
+                                                .usernameParameter("email") // FONDAMENTALE! Diciamo a Spring di usare
+                                                                            // l'email
+                                                .defaultSuccessUrl("/galleria", true)// Dove andare se il login ha
+                                                                                     // successo
+                                                .failureUrl("/login?errore=true") // Dove andare se si sbaglia password
+                                                .permitAll())
+                                .logout(logout -> logout
+                                                .logoutUrl("/logout") // Il modulo in POST per uscire
+                                                .logoutSuccessUrl("/galleria") // Dove andare dopo essere usciti
+                                                .permitAll());
 
-    // Il nostro criptatore per le password vere nel database
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+                return http.build();
+        }
+
+        // Il nostro criptatore per le password vere nel database
+        @Bean
+        public PasswordEncoder passwordEncoder() {
+                return new BCryptPasswordEncoder();
+        }
 }

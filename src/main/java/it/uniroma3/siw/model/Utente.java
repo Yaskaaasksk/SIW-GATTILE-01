@@ -1,38 +1,55 @@
 package it.uniroma3.siw.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "utente")
 public class Utente {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(name = "email")
 	private String email;
-	
+
 	@Column(name = "nome")
 	private String nome;
-	
+
 	@Column(name = "cognome")
 	private String cognome;
-	
+
 	@Column(name = "numero_di_telefono")
 	private String numeroTelefono;
-	
+
 	@Column(name = "password")
 	private String password;
-	
+
 	@Column(name = "ruolo")
 	private String ruolo;
-	
+
+	@ManyToMany
+	@JoinTable(name = "preferiti", joinColumns = @JoinColumn(name = "utente_id"), inverseJoinColumns = @JoinColumn(name = "gatto_id"))
+	private Set<Gatto> preferiti = new HashSet<>();
+
+	public Set<Gatto> getPreferiti() {
+		return preferiti;
+	}
+
+	public void setPreferiti(Set<Gatto> preferiti) {
+		this.preferiti = preferiti;
+	}
 
 	/**
 	 * @return the ruolo
@@ -131,9 +148,5 @@ public class Utente {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
-	
-	
 
 }
